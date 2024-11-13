@@ -33,7 +33,7 @@ public class HeadlessTask implements MethodChannel.MethodCallHandler, Runnable {
     private static final String KEY_CLIENT_CALLBACK_ID          = "clientCallbackId";
     private static final String METHOD_CHANNEL_NAME             = BackgroundFetchModule.PLUGIN_ID + "/headless";
     private static final String ACTION_INITIALIZED              = "initialized";
-    private Context mContext;
+    private final Context mContext;
     // Deprecated 1.12.0
     private static FlutterEngine sBackgroundFlutterEngine;
 
@@ -145,8 +145,8 @@ public class HeadlessTask implements MethodChannel.MethodCallHandler, Runnable {
      * Persist callbacks in Background-thread.
      */
     static class RegistrationTask implements Runnable {
-        private Context mContext;
-        private List<Object> mCallbacks;
+        private final Context mContext;
+        private final List<Object> mCallbacks;
 
         RegistrationTask(Context context, List<Object>callbacks) {
             mContext = context;

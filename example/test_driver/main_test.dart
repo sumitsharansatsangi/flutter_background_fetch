@@ -9,7 +9,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('end-to-end test', () {
-    FlutterDriver driver;
+    FlutterDriver? driver;
 
     setUpAll(() async {
       // Connect to a running Flutter application instance.
@@ -18,7 +18,7 @@ void main() {
 
     tearDownAll(() async {
       if (driver != null)
-        driver.close();
+        driver!.close();
     });
 
     test('tap on the floating action button; verify counter', () async {
@@ -26,13 +26,13 @@ void main() {
       SerializableFinder fab = find.byTooltip('Increment');
 
       // Wait for the floating action button to appear
-      await driver.waitFor(fab);
+      await driver!.waitFor(fab);
 
       // Tap on the fab
-      await driver.tap(fab);
+      await driver!.tap(fab);
 
       // Wait for text to change to the desired value
-      await driver.waitFor(find.text('1'));
+      await driver!.waitFor(find.text('1'));
     });
   });
 }

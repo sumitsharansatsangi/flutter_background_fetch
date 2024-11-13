@@ -101,25 +101,36 @@ public class BackgroundFetchModule implements MethodCallHandler {
     @SuppressWarnings("unchecked")
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-        if (call.method.equals(BackgroundFetch.ACTION_CONFIGURE)) {
-            Map<String, Object> params = (Map<String, Object>) call.arguments;
-            configure(params, result);
-        } else if (call.method.equals(BackgroundFetch.ACTION_START)) {
-            start(result);
-        } else if (call.method.equals(BackgroundFetch.ACTION_STOP)) {
-            stop((String) call.arguments, result);
-        } else if (call.method.equals(BackgroundFetch.ACTION_STATUS)) {
-            status(result);
-        } else if (call.method.equals(BackgroundFetch.ACTION_FINISH)) {
-            String taskId = (String) call.arguments;
-            finish(taskId, result);
-        } else if (call.method.equals(ACTION_REGISTER_HEADLESS_TASK)) {
-            registerHeadlessTask((List<Object>) call.arguments, result);
-        } else if (call.method.equals(ACTION_SCHEDULE_TASK)) {
-            Map<String, Object> params = (Map<String, Object>) call.arguments;
-            scheduleTask(params, result);
-        } else {
-            result.notImplemented();
+        switch (call.method) {
+            case BackgroundFetch.ACTION_CONFIGURE: {
+                Map<String, Object> params = (Map<String, Object>) call.arguments;
+                configure(params, result);
+                break;
+            }
+            case BackgroundFetch.ACTION_START:
+                start(result);
+                break;
+            case BackgroundFetch.ACTION_STOP:
+                stop((String) call.arguments, result);
+                break;
+            case BackgroundFetch.ACTION_STATUS:
+                status(result);
+                break;
+            case BackgroundFetch.ACTION_FINISH:
+                String taskId = (String) call.arguments;
+                finish(taskId, result);
+                break;
+            case ACTION_REGISTER_HEADLESS_TASK:
+                registerHeadlessTask((List<Object>) call.arguments, result);
+                break;
+            case ACTION_SCHEDULE_TASK: {
+                Map<String, Object> params = (Map<String, Object>) call.arguments;
+                scheduleTask(params, result);
+                break;
+            }
+            default:
+                result.notImplemented();
+                break;
         }
     }
 
@@ -222,7 +233,7 @@ public class BackgroundFetchModule implements MethodCallHandler {
         return config;
     }
 
-    class FetchStreamHandler implements EventChannel.StreamHandler, BackgroundFetch.Callback {
+    static class FetchStreamHandler implements EventChannel.StreamHandler, BackgroundFetch.Callback {
         private EventChannel.EventSink mEventSink;
 
         @Override
